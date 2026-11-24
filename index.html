@@ -3,399 +3,752 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>ARCADE TARGET 4.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARCADE TARGET 5.1</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;padding:18px 12px;background:#080612;color:white;font-family:Arial,sans-serif;text-align:center}
-h1{font-size:30px;letter-spacing:3px;color:#d7a8ff;text-shadow:0 0 18px #a855f7}
-.subtitle{color:#aaa;font-size:11px;letter-spacing:4px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:550px;margin:18px auto}
-.stat{background:#19152a;border:1px solid #65418a;border-radius:12px;padding:12px 4px;color:#bbb;font-size:11px}
-.stat strong{display:block;color:#facc15;font-size:24px;margin-top:6px}
-#arena{position:relative;width:100%;max-width:550px;height:410px;margin:15px auto;background:radial-gradient(circle,#302047,#100b1c);border:2px solid #a855f7;border-radius:18px;overflow:hidden;touch-action:manipulation}
-#arena:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:25px 25px;pointer-events:none}
-.target{position:absolute;width:60px;height:60px;border:4px solid white;border-radius:50%;z-index:3;display:none;touch-action:manipulation;color:white}
-.red{background:radial-gradient(circle,#fff,#ff6565 25%,#e21c36 70%);box-shadow:0 0 22px #ff3158}
-.gold{background:radial-gradient(circle,#fff,#fff2a6 25%,#ffbd00 70%);box-shadow:0 0 25px gold}
-.diamond{border-radius:12px;background:linear-gradient(135deg,#fff,#48edff,#0878ff);box-shadow:0 0 25px cyan;transform:rotate(45deg)}
-.bomb{background:#222;border:3px solid red;font-size:26px;box-shadow:0 0 25px red}
-.boss{width:115px;height:115px;border-radius:25px;background:radial-gradient(circle,#ffb5b5,#b000ff 50%,#310047);border:5px solid #ffcc00;box-shadow:0 0 35px #ff00dd;font-size:45px}
-#message{position:absolute;top:43%;width:100%;padding:10px;font-size:20px;font-weight:bold;color:#facc15;pointer-events:none;z-index:2}
-#bossInfo{display:none;position:absolute;top:10px;left:5%;width:90%;z-index:4}
-#bossInfo strong{color:#ff8080;font-size:12px}
-#bossBar{height:13px;background:#391b36;border:1px solid white;border-radius:10px;overflow:hidden;margin-top:5px}
-#bossHealth{height:100%;width:100%;background:linear-gradient(90deg,#ff3333,#ffcc00);transition:width .15s}
-#energyBox{max-width:550px;margin:10px auto;color:#aaa;font-size:11px}
-.bar{height:12px;background:#292039;border-radius:10px;overflow:hidden;margin-top:7px;border:1px solid #65418a}
-#energy{height:100%;width:100%;background:linear-gradient(90deg,#00d9ff,#a855f7);transition:width .2s}
-#countdown{color:#facc15;font-weight:bold;margin:12px}
-.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
-.action{padding:13px 20px;border:0;border-radius:25px;background:linear-gradient(135deg,#a855f7,#5b21b6);color:white;font-weight:bold;font-size:13px}
-#sound{background:#292039;border:1px solid #7041a8}
-select,input{background:#19152a;color:white;border:1px solid #7041a8;border-radius:10px;padding:12px;font-size:14px}
-#difficultyBox{margin:18px}
-.legend{color:#ccc;font-size:12px;line-height:2;margin:15px}
-.panel{background:#19152a;border:1px solid #65418a;border-radius:15px;max-width:550px;margin:18px auto;padding:15px}
-.panel h2{color:#facc15;font-size:17px}
-#leaderboard{list-style:none;padding:0;text-align:left}
-#leaderboard li{padding:10px;border-bottom:1px solid #39304d;display:flex;justify-content:space-between;gap:8px}
-#leaderboard li span{overflow-wrap:anywhere}
-footer{font-size:10px;color:#777;padding:20px}
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  background:#080611;
+  color:white;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:16px;
+}
+
+.panel { max-width:650px; margin:auto; }
+
+h1 {
+  color:#c084fc;
+  font-size:30px;
+  margin:12px 0 5px;
+  text-shadow:0 0 15px #a855f7;
+}
+
+.subtitle { color:#aaa; margin-bottom:18px; }
+
+input {
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  background:#171126;
+  color:white;
+  border:1px solid #9333ea;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:12px;
+}
+
+.stat {
+  background:#171126;
+  border:1px solid #59358b;
+  border-radius:12px;
+  padding:11px 3px;
+}
+
+.stat span {
+  display:block;
+  color:#c084fc;
+  font-size:11px;
+  margin-bottom:5px;
+}
+
+.stat strong { font-size:19px; }
+
+.extra {
+  display:flex;
+  justify-content:space-around;
+  background:#171126;
+  padding:12px;
+  border-radius:12px;
+  margin:10px 0;
+  font-size:13px;
+}
+
+.extra strong { color:#facc15; }
+
+#energyBar,#bossBar {
+  height:10px;
+  background:#292039;
+  border-radius:10px;
+  overflow:hidden;
+  margin:10px 0;
+}
+
+#energyFill {
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#a855f7,#facc15);
+}
+
+#bossFill {
+  height:100%;
+  width:100%;
+  background:#ef4444;
+  transition:width .2s;
+}
+
+#arena {
+  position:relative;
+  height:410px;
+  background:radial-gradient(circle,#261344,#0c0916);
+  border:2px solid #9333ea;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 0 25px #7e22ce55;
+  touch-action:manipulation;
+}
+
+#message {
+  position:absolute;
+  z-index:20;
+  top:45%;
+  width:100%;
+  padding:10px;
+  color:#e9d5ff;
+  font-weight:bold;
+  font-size:19px;
+  pointer-events:none;
+}
+
+#target {
+  position:absolute;
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  font-weight:bold;
+  border:3px solid white;
+  cursor:pointer;
+  touch-action:manipulation;
+  box-shadow:0 0 18px currentColor;
+  z-index:4;
+}
+
+.red { background:#ef4444; color:white; }
+.gold { background:#eab308; color:white; }
+.diamond { background:#06b6d4; color:white; }
+.bomb { background:#292929; color:#ff4444; }
+
+#bossArea {
+  display:none;
+  position:absolute;
+  top:12px;
+  width:100%;
+  z-index:3;
+  pointer-events:none;
+}
+
+#bossCharacter {
+  font-size:85px;
+  display:inline-block;
+  animation:oniFloat 1.2s infinite ease-in-out;
+  filter:drop-shadow(0 0 15px #ff2222);
+}
+
+@keyframes oniFloat {
+  0%,100% { transform:translateY(0) rotate(-3deg); }
+  50% { transform:translateY(-9px) rotate(3deg); }
+}
+
+#bossName {
+  font-size:15px;
+  color:#facc15;
+  font-weight:bold;
+  text-shadow:0 0 10px red;
+}
+
+#bossBar {
+  width:65%;
+  margin:7px auto;
+  border:1px solid white;
+}
+
+#bossFill { background:linear-gradient(90deg,#ef4444,#f97316); }
+
+.projectile {
+  position:absolute;
+  left:50%;
+  top:125px;
+  width:58px;
+  height:58px;
+  margin-left:-29px;
+  border-radius:50%;
+  border:3px solid white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  font-weight:bold;
+  z-index:10;
+  cursor:pointer;
+  touch-action:manipulation;
+  animation:fly 1.8s linear forwards;
+}
+
+.good {
+  background:#06b6d4;
+  color:white;
+  box-shadow:0 0 18px #06b6d4;
+}
+
+.bad {
+  background:#dc2626;
+  color:white;
+  box-shadow:0 0 18px red;
+}
+
+@keyframes fly {
+  0% {
+    transform:translate(0,0) scale(.75);
+    opacity:1;
+  }
+  100% {
+    transform:translate(var(--dx),var(--dy)) scale(1);
+    opacity:.9;
+  }
+}
+
+#bossInfo {
+  display:none;
+  color:#facc15;
+  margin:8px;
+  font-weight:bold;
+}
+
+.buttons {
+  display:flex;
+  gap:9px;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+
+button.action {
+  flex:1;
+  min-width:100px;
+  padding:14px 7px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#9333ea,#6b21a8);
+  color:white;
+  font-size:14px;
+  font-weight:bold;
+}
+
+#energyBtn {
+  background:linear-gradient(135deg,#ca8a04,#854d0e);
+}
+
+button:disabled { opacity:.4; }
+
+.leaderboard {
+  margin-top:22px;
+  background:#171126;
+  border:1px solid #59358b;
+  padding:15px;
+  border-radius:14px;
+  text-align:left;
+}
+
+.leaderboard h2 {
+  text-align:center;
+  color:#facc15;
+  margin-bottom:12px;
+}
+
+.leaderboard p {
+  padding:8px;
+  border-bottom:1px solid #38254f;
+}
+
+@media(max-width:400px) {
+  .stat strong { font-size:16px; }
+  #arena { height:380px; }
+}
 </style>
 </head>
+
 <body>
+<div class="panel">
 
 <h1>🎯 ARCADE TARGET</h1>
-<p class="subtitle">BOSS BATTLE EDITION 4.0</p>
+<p class="subtitle">VERSION 5.1 · ONI BOSS EDITION</p>
 
-<div id="difficultyBox">
-<label for="difficulty">⚔️ DIFFICOLTÀ</label><br><br>
-<select id="difficulty">
-<option value="easy">FACILE</option>
-<option value="normal" selected>NORMALE</option>
-<option value="hard">DIFFICILE</option>
-<option value="impossible">IMPOSSIBILE</option>
-</select>
-</div>
+<input id="playerName" maxlength="14"
+placeholder="Inserisci il tuo nome">
 
 <div class="stats">
-<div class="stat">PUNTEGGIO<strong id="score">0</strong></div>
-<div class="stat">TEMPO<strong id="time">45</strong></div>
-<div class="stat">LIVELLO<strong id="level">1</strong></div>
-<div class="stat">VITE<strong id="lives">❤️❤️❤️</strong></div>
-<div class="stat">COMBO<strong id="combo">x1</strong></div>
-<div class="stat">RECORD<strong id="best">0</strong></div>
+  <div class="stat"><span>PUNTEGGIO</span><strong id="score">0</strong></div>
+  <div class="stat"><span>TEMPO</span><strong id="time">45</strong></div>
+  <div class="stat"><span>LIVELLO</span><strong id="level">1</strong></div>
+  <div class="stat"><span>RECORD</span><strong id="best">0</strong></div>
 </div>
 
-<div id="energyBox">
-ENERGIA
-<div class="bar"><div id="energy"></div></div>
+<div class="extra">
+  <div>❤️ Vite: <strong id="lives">3</strong></div>
+  <div>🔥 Combo: <strong id="combo">0</strong></div>
+  <div>⚡ Energia: <strong id="energy">0%</strong></div>
 </div>
 
-<div id="countdown">PREPARATI ALLA SFIDA!</div>
+<div id="energyBar"><div id="energyFill"></div></div>
+
+<div id="bossInfo">
+  <div id="bossName">BOSS ONI</div>
+  <div id="bossBar"><div id="bossFill"></div></div>
+</div>
 
 <div id="arena">
-<div id="bossInfo">
-<strong id="bossTitle">👹 BOSS FINALE</strong>
-<div id="bossBar"><div id="bossHealth"></div></div>
-</div>
-<div id="message">PREMI START PER GIOCARE</div>
-<button id="target" class="target" aria-label="Colpisci il bersaglio"></button>
-</div>
 
-<div class="legend">
-🔴 +1 &nbsp; 🟡 +5 &nbsp; 💎 +10<br>
-💣 -5 e perdi una vita<br>
-👹 BOSS: colpiscilo più volte!
+  <div id="bossArea">
+    <div id="bossCharacter">👹</div>
+  </div>
+
+  <div id="message">Premi INIZIA per giocare!</div>
+  <div id="target"></div>
+
 </div>
 
-<div class="controls">
-<button class="action" id="start">▶ START GAME</button>
-<button class="action" id="sound">🔊 AUDIO ON</button>
+<div class="buttons">
+  <button class="action" id="startBtn">▶ INIZIA</button>
+  <button class="action" id="energyBtn" disabled>⚡ RALLENTA</button>
+  <button class="action" id="soundBtn">🔊 AUDIO ON</button>
 </div>
 
-<section class="panel">
-<h2>🏆 TOP 5 PLAYERS</h2>
-<input id="playerName" maxlength="15" placeholder="Il tuo nome" aria-label="Nome giocatore">
-<ol id="leaderboard"></ol>
-</section>
+<div class="leaderboard">
+  <h2>🏆 TOP 5 CLASSIFICA</h2>
+  <div id="leaderboard"></div>
+</div>
 
-<footer>ARCADE TARGET 4.0 • ULTIMATE BATTLE</footer>
+</div>
 
 <script>
-let score=0,time=45,level=1,lives=3,combo=0,energy=100;
-let playing=false,soundOn=true;
-let timer=null,movement=null,spawnTimer=null,audio=null;
-let speed=1000,targetType="red";
-let bossActive=false,bossHP=0,bossMax=0;
-let best=Number(localStorage.getItem("arcadeBest"))||0;
+let score=0,time=45,level=1,lives=3,combo=0,energy=0;
+let playing=false,bossActive=false,slowed=false;
+let bossHP=0,bossMaxHP=0,lastBossLevel=0;
+let timer,movement,slowTimer,attackTimer,audio;
+let soundOn=true;
 
 const arena=document.getElementById("arena");
 const target=document.getElementById("target");
 const message=document.getElementById("message");
-const difficulty=document.getElementById("difficulty");
 
-const settings={
-easy:{time:60,speed:1300,points:1},
-normal:{time:45,speed:1000,points:1},
-hard:{time:40,speed:750,points:1.2},
-impossible:{time:35,speed:550,points:1.5}
-};
-
-function update(){
-document.getElementById("score").textContent=score;
-document.getElementById("time").textContent=time;
-document.getElementById("level").textContent=level;
-document.getElementById("lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);
-document.getElementById("combo").textContent="x"+Math.max(1,Math.floor(combo/3)+1);
+let best=Number(localStorage.getItem("arcadeBest"))||0;
 document.getElementById("best").textContent=best;
-document.getElementById("energy").style.width=energy+"%";
+
+const bosses=[
+  {name:"ONI ROSSO",face:"👹",color:"#ef4444",hp:8},
+  {name:"ONI BLU",face:"👺",color:"#06b6d4",hp:11},
+  {name:"ONI VIOLA",face:"👹",color:"#a855f7",hp:14},
+  {name:"ONI D'ORO",face:"👺",color:"#eab308",hp:17},
+  {name:"ONI SUPREMO",face:"👹",color:"#dc2626",hp:22}
+];
+
+let bossIndex=0;
+
+function playSound(freq=500) {
+  if(!soundOn)return;
+  try {
+    audio=audio||new(window.AudioContext||window.webkitAudioContext)();
+    if(audio.state==="suspended")audio.resume();
+    const osc=audio.createOscillator();
+    const gain=audio.createGain();
+    osc.frequency.value=freq;
+    gain.gain.setValueAtTime(.08,audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.15);
+    osc.connect(gain);
+    gain.connect(audio.destination);
+    osc.start();
+    osc.stop(audio.currentTime+.15);
+  }catch(e){}
 }
 
-function playSound(freq,duration=.1){
-if(!soundOn)return;
-try{
-audio=audio||new(window.AudioContext||window.webkitAudioContext)();
-if(audio.state==="suspended")audio.resume();
-let osc=audio.createOscillator();
-let gain=audio.createGain();
-osc.connect(gain);gain.connect(audio.destination);
-osc.frequency.value=freq;
-gain.gain.value=.07;
-osc.start();
-osc.stop(audio.currentTime+duration);
-}catch(e){}
+function updateUI(){
+  scoreDisplay.textContent=score;
+  document.getElementById("time").textContent=time;
+  document.getElementById("level").textContent=level;
+  document.getElementById("lives").textContent=lives;
+  document.getElementById("combo").textContent=combo;
+  document.getElementById("energy").textContent=energy+"%";
+  document.getElementById("energyFill").style.width=energy+"%";
+  document.getElementById("energyBtn").disabled=
+    !playing||energy<100||slowed;
 }
 
-function clearTargets(){
-clearInterval(movement);
-clearTimeout(spawnTimer);
-target.style.display="none";
+const scoreDisplay=document.getElementById("score");
+
+function speed(){
+  return Math.max(620,1050-(level-1)*35);
+}
+
+function stopMovement(){
+  clearInterval(movement);
 }
 
 function moveTarget(){
-let maxX=arena.clientWidth-target.offsetWidth-8;
-let maxY=arena.clientHeight-target.offsetHeight-8;
-target.style.left=(5+Math.random()*Math.max(0,maxX-5))+"px";
-target.style.top=(bossActive?65:5)+Math.random()*Math.max(0,maxY-(bossActive?65:5))+"px";
+  const size=target.offsetWidth;
+  target.style.left=Math.floor(Math.random()*(arena.clientWidth-size))+"px";
+  target.style.top=Math.floor(Math.random()*(arena.clientHeight-size))+"px";
 }
 
-function startBoss(){
-bossActive=true;
-clearTargets();
-bossMax=5+Math.floor(level/5)*2;
-bossHP=bossMax;
-targetType="boss";
-target.className="target boss";
-target.textContent="👹";
-target.style.display="block";
-document.getElementById("bossInfo").style.display="block";
-document.getElementById("bossTitle").textContent="👹 BOSS LIVELLO "+level;
-updateBossBar();
-document.getElementById("countdown").textContent="⚠️ BOSS IN ARRIVO!";
-moveTarget();
-movement=setInterval(()=>{
-if(playing&&bossActive)moveTarget();
-},Math.max(400,speed));
+function startMovement(){
+  stopMovement();
+  movement=setInterval(()=>{
+    if(playing&&!bossActive&&!slowed)moveTarget();
+  },speed());
+}
+
+function clearProjectiles(){
+  document.querySelectorAll(".projectile").forEach(p=>p.remove());
+}
+
+function spawnNormalTarget(){
+  if(!playing||bossActive)return;
+
+  const r=Math.random();
+
+  if(r<.48){
+    target.className="red";
+    target.textContent="+1";
+  }else if(r<.70){
+    target.className="gold";
+    target.textContent="+5";
+  }else if(r<.85){
+    target.className="diamond";
+    target.textContent="💎";
+  }else{
+    target.className="bomb";
+    target.textContent="💣";
+  }
+
+  target.style.display="flex";
+  moveTarget();
 }
 
 function updateBossBar(){
-document.getElementById("bossHealth").style.width=(bossHP/bossMax*100)+"%";
+  document.getElementById("bossFill").style.width=
+    Math.max(0,bossHP/bossMaxHP*100)+"%";
 }
 
-function spawnTarget(){
-if(!playing)return;
-clearTargets();
+function startBoss(){
+  bossActive=true;
+  lastBossLevel=level;
+  clearProjectiles();
+  target.style.display="none";
+  stopMovement();
 
-if(level%5===0&&!bossActive&&score>=level*20){
-startBoss();
-return;
+  bossIndex=Math.floor(level/5)-1;
+  const boss=bosses[Math.min(bossIndex,bosses.length-1)];
+
+  bossMaxHP=boss.hp+Math.max(0,Math.floor(level/25))*5;
+  bossHP=bossMaxHP;
+
+  const character=document.getElementById("bossCharacter");
+  character.textContent=boss.face;
+  character.style.filter="drop-shadow(0 0 18px "+boss.color+")";
+
+  document.getElementById("bossName").textContent=boss.name;
+  document.getElementById("bossInfo").style.display="block";
+  document.getElementById("bossArea").style.display="block";
+
+  updateBossBar();
+  message.textContent="⚠️ "+boss.name+" È ARRIVATO!";
+
+  playSound(180);
+
+  setTimeout(()=>{
+    if(!playing)return;
+    message.textContent="";
+    attackTimer=setInterval(launchProjectile,slowed?1800:1250);
+  },1300);
 }
 
-let r=Math.random();
+function launchProjectile(){
+  if(!playing||!bossActive)return;
 
-if(r<.43){
-targetType="red";target.textContent="";
-}else if(r<.65){
-targetType="gold";target.textContent="";
-}else if(r<.82){
-targetType="diamond";target.textContent="";
-}else{
-targetType="bomb";target.textContent="💣";
+  const good=Math.random()<.68;
+  const p=document.createElement("div");
+
+  p.className="projectile "+(good?"good":"bad");
+  p.textContent=good?"🎯":"💀";
+
+  const maxX=arena.clientWidth-90;
+  const dx=Math.floor(Math.random()*maxX)-maxX/2;
+  const dy=170+Math.floor(Math.random()*125);
+
+  p.style.setProperty("--dx",dx+"px");
+  p.style.setProperty("--dy",dy+"px");
+
+  p.addEventListener("pointerdown",function(e){
+    e.preventDefault();
+    if(!playing||!bossActive)return;
+
+    if(good){
+      bossHP--;
+      score+=2;
+      energy=Math.min(100,energy+5);
+      combo++;
+      playSound(750);
+      message.textContent="💥 COLPITO! -1 VITA AL BOSS";
+      updateBossBar();
+      updateUI();
+
+      if(bossHP<=0){
+        defeatBoss();
+      }
+    }else{
+      lives--;
+      combo=0;
+      playSound(130);
+      message.textContent="💀 MALEDIZIONE! -1 TUA VITA";
+      updateUI();
+
+      if(lives<=0){
+        p.remove();
+        endGame();
+        return;
+      }
+    }
+
+    p.remove();
+
+    setTimeout(()=>{
+      if(playing&&bossActive)message.textContent="";
+    },650);
+  });
+
+  p.addEventListener("animationend",()=>p.remove());
+  arena.appendChild(p);
 }
 
-target.className="target "+targetType;
-target.style.display="block";
-moveTarget();
+function defeatBoss(){
+  bossActive=false;
+  clearInterval(attackTimer);
+  clearProjectiles();
 
-movement=setInterval(()=>{
-if(playing&&!bossActive)moveTarget();
-},Math.max(300,speed*.65));
+  document.getElementById("bossArea").style.display="none";
+  document.getElementById("bossInfo").style.display="none";
 
-spawnTimer=setTimeout(()=>{
-if(playing&&!bossActive){
-combo=0;
-update();
-spawnTarget();
-}
-},speed*1.6);
-}
+  score+=50+level*5;
+  lives=Math.min(5,lives+1);
+  energy=Math.min(100,energy+25);
 
-function hitTarget(){
-if(!playing||target.style.display==="none")return;
+  message.textContent="🏆 ONI SCONFITTO! +BONUS E +1 VITA!";
+  playSound(1000);
+  updateUI();
 
-if(bossActive){
-bossHP--;
-score+=2;
-energy=Math.min(100,energy+2);
-playSound(850,.08);
-
-if(bossHP<=0){
-bossActive=false;
-clearTargets();
-document.getElementById("bossInfo").style.display="none";
-score+=50;
-energy=100;
-lives=Math.min(3,lives+1);
-level++;
-speed=Math.max(300,speed-70);
-document.getElementById("countdown").textContent="🏆 BOSS SCONFITTO! +50 PUNTI";
-update();
-playSound(1300,.35);
-setTimeout(()=>{
-if(playing)spawnTarget();
-},500);
-}else{
-updateBossBar();
-moveTarget();
-}
-update();
-return;
+  setTimeout(()=>{
+    if(!playing)return;
+    message.textContent="";
+    spawnNormalTarget();
+    startMovement();
+  },1800);
 }
 
-let points=0;
+function updateLevel(){
+  const newLevel=Math.floor(score/15)+1;
 
-if(targetType==="red"){points=1;playSound(550);}
-if(targetType==="gold"){points=5;playSound(850);}
-if(targetType==="diamond"){points=10;playSound(1100);}
+  if(newLevel>level){
+    level=newLevel;
+    playSound(850);
 
-if(targetType==="bomb"){
-score=Math.max(0,score-5);
-lives--;
-energy=Math.max(0,energy-25);
-combo=0;
-playSound(130,.2);
-if(lives<=0||energy<=0){
-update();
-endGame();
-return;
-}
-}else{
-combo++;
-let multiplier=Math.min(5,Math.floor(combo/3)+1);
-score+=Math.round(points*multiplier);
-energy=Math.min(100,energy+5);
+    if(level%5===0&&level!==lastBossLevel){
+      startBoss();
+    }else{
+      message.textContent="⬆ LIVELLO "+level+"!";
+    }
+
+    startMovement();
+  }
 }
 
-let newLevel=Math.floor(score/20)+1;
-if(newLevel>level){
-level=newLevel;
-speed=Math.max(300,settings[difficulty.value].speed-(level-1)*65);
-document.getElementById("countdown").textContent="🔥 LIVELLO "+level+"!";
-playSound(1200,.2);
-}
+function hitNormalTarget(){
+  if(!playing||bossActive)return;
 
-update();
+  if(target.classList.contains("bomb")){
+    score=Math.max(0,score-5);
+    lives--;
+    combo=0;
+    playSound(150);
+    message.textContent="💣 BOMBA! -1 VITA";
 
-if(level%5===0&&score>=level*20){
-startBoss();
-}else{
-spawnTarget();
-}
+    if(lives<=0){
+      updateUI();
+      endGame();
+      return;
+    }
+  }else{
+    let points=target.classList.contains("diamond")?10:
+      target.classList.contains("gold")?5:1;
+
+    combo++;
+    const multiplier=combo>=10?3:combo>=5?2:1;
+
+    score+=points*multiplier;
+    energy=Math.min(100,energy+8);
+    playSound(600);
+    message.textContent=multiplier>1?"🔥 COMBO x"+multiplier:"";
+  }
+
+  updateLevel();
+  updateUI();
+
+  if(!bossActive)spawnNormalTarget();
+
+  setTimeout(()=>{
+    if(playing&&!bossActive)message.textContent="";
+  },500);
 }
 
 target.addEventListener("pointerdown",e=>{
-e.preventDefault();
-hitTarget();
+  e.preventDefault();
+  hitNormalTarget();
 });
 
+function activateEnergy(){
+  if(!playing||energy<100||slowed)return;
+
+  energy=0;
+  slowed=true;
+  clearInterval(movement);
+  clearInterval(attackTimer);
+
+  updateUI();
+  message.textContent="⚡ RALLENTAMENTO ATTIVO!";
+
+  if(bossActive){
+    attackTimer=setInterval(launchProjectile,2200);
+  }
+
+  slowTimer=setTimeout(()=>{
+    slowed=false;
+    if(playing){
+      if(bossActive){
+        clearInterval(attackTimer);
+        attackTimer=setInterval(launchProjectile,1250);
+      }else{
+        startMovement();
+      }
+      message.textContent="";
+    }
+    updateUI();
+  },5000);
+}
+
+function saveScore(){
+  const name=document.getElementById("playerName").value.trim()||"Giocatore";
+
+  let scores=JSON.parse(localStorage.getItem("arcadeScores")||"[]");
+  scores.push({name,score});
+  scores.sort((a,b)=>b.score-a.score);
+  scores=scores.slice(0,5);
+
+  localStorage.setItem("arcadeScores",JSON.stringify(scores));
+  showLeaderboard();
+}
+
+function showLeaderboard(){
+  const scores=JSON.parse(localStorage.getItem("arcadeScores")||"[]");
+  const board=document.getElementById("leaderboard");
+  board.innerHTML="";
+
+  if(!scores.length){
+    board.textContent="Ancora nessun record!";
+    return;
+  }
+
+  const medals=["🥇","🥈","🥉","4.","5."];
+
+  scores.forEach((item,i)=>{
+    const row=document.createElement("p");
+    row.textContent=medals[i]+" "+item.name+" — "+item.score+" punti";
+    board.appendChild(row);
+  });
+}
+
 function startGame(){
-clearInterval(timer);
-clearTargets();
+  clearInterval(timer);
+  clearInterval(attackTimer);
+  clearInterval(movement);
+  clearTimeout(slowTimer);
+  clearProjectiles();
 
-score=0;
-level=1;
-time=settings[difficulty.value].time;
-lives=3;
-combo=0;
-energy=100;
-speed=settings[difficulty.value].speed;
-bossActive=false;
-playing=true;
+  score=0;
+  time=45;
+  level=1;
+  lives=3;
+  combo=0;
+  energy=0;
+  lastBossLevel=0;
+  bossActive=false;
+  slowed=false;
+  playing=true;
 
-document.getElementById("bossInfo").style.display="none";
-document.getElementById("message").style.display="none";
-document.getElementById("countdown").textContent="🎯 INIZIA LA BATTAGLIA!";
-document.getElementById("start").textContent="IN GIOCO";
-difficulty.disabled=true;
+  target.style.display="none";
+  document.getElementById("bossArea").style.display="none";
+  document.getElementById("bossInfo").style.display="none";
+  document.getElementById("startBtn").textContent="↻ RICOMINCIA";
 
-update();
-spawnTarget();
+  message.textContent="";
+  updateUI();
+  spawnNormalTarget();
+  startMovement();
 
-timer=setInterval(()=>{
-time--;
-update();
-if(time<=0)endGame();
-},1000);
+  timer=setInterval(()=>{
+    time--;
+    updateUI();
+
+    if(time<=0)endGame();
+  },1000);
 }
 
 function endGame(){
-if(!playing)return;
-playing=false;
-clearInterval(timer);
-clearTargets();
-bossActive=false;
-document.getElementById("bossInfo").style.display="none";
-difficulty.disabled=false;
+  if(!playing)return;
 
-if(score>best){
-best=score;
-localStorage.setItem("arcadeBest",best);
-document.getElementById("countdown").textContent="🏆 NUOVO RECORD!";
-}else{
-document.getElementById("countdown").textContent="PARTITA TERMINATA!";
+  playing=false;
+  clearInterval(timer);
+  clearInterval(attackTimer);
+  clearInterval(movement);
+  clearTimeout(slowTimer);
+  clearProjectiles();
+
+  target.style.display="none";
+  document.getElementById("bossArea").style.display="none";
+  document.getElementById("bossInfo").style.display="none";
+
+  if(score>best){
+    best=score;
+    localStorage.setItem("arcadeBest",best);
+    document.getElementById("best").textContent=best;
+  }
+
+  saveScore();
+
+  message.textContent="🏁 GAME OVER! PUNTEGGIO: "+score;
+  document.getElementById("startBtn").textContent="▶ GIOCA ANCORA";
+  updateUI();
 }
 
-saveScore(score);
-message.style.display="block";
-message.innerHTML="GAME OVER<br><br>"+score+" PUNTI";
-document.getElementById("start").textContent="↻ GIOCA ANCORA";
-playSound(250,.3);
-update();
-}
+document.getElementById("startBtn").addEventListener("click",startGame);
+document.getElementById("energyBtn").addEventListener("click",activateEnergy);
 
-function saveScore(points){
-let scores=JSON.parse(localStorage.getItem("arcadeTop5")||"[]");
-let name=document.getElementById("playerName").value.trim()||"PLAYER";
-scores.push({name:name,score:points,date:new Date().toLocaleDateString("it-IT")});
-scores.sort((a,b)=>b.score-a.score);
-scores=scores.slice(0,5);
-localStorage.setItem("arcadeTop5",JSON.stringify(scores));
-renderLeaderboard();
-}
-
-function renderLeaderboard(){
-let scores=JSON.parse(localStorage.getItem("arcadeTop5")||"[]");
-let list=document.getElementById("leaderboard");
-list.innerHTML="";
-
-if(!scores.length){
-list.innerHTML="<li>Nessun giocatore ancora</li>";
-return;
-}
-
-scores.forEach((item,index)=>{
-let li=document.createElement("li");
-let left=document.createElement("span");
-let right=document.createElement("strong");
-left.textContent=["🥇","🥈","🥉","4.","5."][index]+" "+item.name+" - "+item.date;
-right.textContent=item.score+" PT";
-li.append(left,right);
-list.appendChild(li);
-});
-}
-
-document.getElementById("start").addEventListener("click",startGame);
-
-document.getElementById("sound").addEventListener("click",function(){
-soundOn=!soundOn;
-this.textContent=soundOn?"🔊 AUDIO ON":"🔇 AUDIO OFF";
-if(soundOn)playSound(600);
+document.getElementById("soundBtn").addEventListener("click",function(){
+  soundOn=!soundOn;
+  this.textContent=soundOn?"🔊 AUDIO ON":"🔇 AUDIO OFF";
+  if(soundOn)playSound();
 });
 
-update();
-renderLeaderboard();
+showLeaderboard();
+updateUI();
 </script>
 </body>
 </html>
