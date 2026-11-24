@@ -1,531 +1,267 @@
 
-
 <!DOCTYPE html>
-
 <html lang="it">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Arcade Target 2.0</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Arcade Target 3.0</title>
 <style>
-
-* { box-sizing: border-box; }
-
-body {
-
-  margin: 0;
-
-  padding: 25px 15px;
-
-  min-height: 100vh;
-
-  background: #09091c;
-
-  color: white;
-
-  font-family: Arial, sans-serif;
-
-  text-align: center;
-
-}
-
-h1 {
-
-  color: #00eaff;
-
-  font-size: 32px;
-
-  text-shadow: 0 0 18px #00eaff;
-
-}
-
-.subtitle { color: #aaa; }
-
-.stats {
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 9px;
-
-  max-width: 500px;
-
-  margin: 25px auto 15px;
-
-}
-
-.stat {
-
-  background: #202044;
-
-  border: 1px solid #494979;
-
-  border-radius: 13px;
-
-  padding: 13px 5px;
-
-  font-size: 12px;
-
-}
-
-.stat strong {
-
-  display: block;
-
-  color: #ffe34d;
-
-  font-size: 25px;
-
-  margin-top: 7px;
-
-}
-
-#level {
-
-  color: #00eaff;
-
-}
-
-#arena {
-
-  position: relative;
-
-  width: 100%;
-
-  max-width: 500px;
-
-  height: 350px;
-
-  margin: auto;
-
-  overflow: hidden;
-
-  background:
-
-    radial-gradient(circle, #25254c 1px, transparent 1px);
-
-  background-size: 22px 22px;
-
-  background-color: #13132d;
-
-  border: 2px solid #00eaff;
-
-  border-radius: 18px;
-
-  box-shadow: 0 0 20px #00eaff44;
-
-}
-
-.target {
-
-  position: absolute;
-
-  width: 62px;
-
-  height: 62px;
-
-  border-radius: 50%;
-
-  border: 5px solid white;
-
-  cursor: pointer;
-
-  touch-action: manipulation;
-
-}
-
-.red {
-
-  background: #ff3158;
-
-  box-shadow: 0 0 22px #ff3158;
-
-}
-
-.gold {
-
-  background: #ffdf30;
-
-  box-shadow: 0 0 25px #ffdf30;
-
-  border-color: #fff5b0;
-
-}
-
-#message {
-
-  min-height: 28px;
-
-  margin: 20px 0 5px;
-
-  color: #ffe34d;
-
-  font-weight: bold;
-
-}
-
-button.start {
-
-  margin: 15px auto;
-
-  padding: 16px 30px;
-
-  border: none;
-
-  border-radius: 30px;
-
-  background: #00eaff;
-
-  color: #09091c;
-
-  font-size: 17px;
-
-  font-weight: bold;
-
-}
-
-button:active { transform: scale(.96); }
-
-#sound {
-
-  background: #29294a;
-
-  color: white;
-
-  border: 1px solid #555;
-
-  border-radius: 20px;
-
-  padding: 10px 18px;
-
-}
-
-.legend {
-
-  color: #bbb;
-
-  font-size: 13px;
-
-  line-height: 2;
-
-}
-
+*{box-sizing:border-box}
+body{margin:0;padding:20px 12px;background:#090714;color:white;font-family:Arial;text-align:center}
+h1{font-size:32px;letter-spacing:3px;color:#d9a5ff;text-shadow:0 0 18px #a855f7}
+.subtitle{color:#aaa;letter-spacing:4px;font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:550px;margin:20px auto 12px}
+.stat{background:#19152a;border:1px solid #65418a;border-radius:13px;padding:13px 5px;font-size:11px;color:#bbb}
+.stat strong{display:block;color:#facc15;font-size:25px;margin-top:7px}
+#bestbox{max-width:550px;margin:12px auto}
+#arena{position:relative;width:100%;max-width:550px;height:420px;margin:15px auto;background:radial-gradient(circle,#302047,#100d1c);border:2px solid #a855f7;border-radius:18px;overflow:hidden;box-shadow:0 0 25px #9333ea44;touch-action:manipulation}
+#arena:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:25px 25px;pointer-events:none}
+.target{position:absolute;width:62px;height:62px;border:4px solid white;border-radius:50%;z-index:2;display:none;touch-action:manipulation}
+.red{background:radial-gradient(circle,#fff,#ff6565 25%,#e21c36 70%);box-shadow:0 0 22px #ff3158}
+.gold{background:radial-gradient(circle,#fff,#fff2a6 25%,#ffbd00 70%);box-shadow:0 0 25px gold}
+.diamond{border-radius:12px;background:linear-gradient(135deg,#fff,#48edff,#0878ff);box-shadow:0 0 25px cyan;transform:rotate(45deg)}
+.bomb{background:#222;border:3px solid #ff3333;box-shadow:0 0 25px red;font-size:28px}
+#message{position:absolute;top:42%;width:100%;font-weight:bold;font-size:20px;color:#facc15;pointer-events:none;padding:10px}
+#countdown{color:#facc15;font-weight:bold;margin:12px}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.action{padding:15px 22px;border:0;border-radius:25px;background:linear-gradient(135deg,#a855f7,#5b21b6);color:white;font-weight:bold;font-size:14px}
+#sound{background:#292039;border:1px solid #7041a8}
+.legend{color:#ccc;font-size:13px;line-height:2;margin:15px}
+.panel{background:#19152a;border:1px solid #65418a;border-radius:15px;max-width:550px;margin:18px auto;padding:15px}
+.panel h2{color:#facc15;font-size:17px}
+#leaderboard{list-style:none;padding:0;text-align:left}
+#leaderboard li{padding:10px;border-bottom:1px solid #39304d;display:flex;justify-content:space-between}
+footer{font-size:10px;color:#777;padding:20px}
 </style>
-
 </head>
-
 <body>
 
 <h1>🎯 ARCADE TARGET</h1>
-
-<p class="subtitle">VERSIONE 2.0 — THE CHALLENGE</p>
-
-<div class="stats">
-
-  <div class="stat">
-
-    PUNTEGGIO
-
-    <strong id="score">0</strong>
-
-  </div>
-
-  <div class="stat">
-
-    TEMPO
-
-    <strong id="time">30</strong>
-
-  </div>
-
-  <div class="stat">
-
-    LIVELLO
-
-    <strong id="level">1</strong>
-
-  </div>
-
-</div>
+<p class="subtitle">ULTIMATE EDITION 3.0</p>
 
 <div class="stats">
-
-  <div class="stat" style="grid-column:span 3">
-
-    🏆 RECORD PERSONALE
-
-    <strong id="best">0</strong>
-
-  </div>
-
+<div class="stat">PUNTEGGIO<strong id="score">0</strong></div>
+<div class="stat">TEMPO<strong id="time">30</strong></div>
+<div class="stat">LIVELLO<strong id="level">1</strong></div>
 </div>
+
+<div class="stat" id="bestbox">🏆 RECORD PERSONALE<strong id="best">0</strong></div>
+
+<div id="countdown">PREPARATI ALLA SFIDA!</div>
 
 <div id="arena">
-
-  <button id="target" class="target red"
-
-    aria-label="Colpisci il bersaglio"
-
-    style="display:none"></button>
-
+<div id="message">PREMI START PER GIOCARE</div>
+<button id="target" class="target" aria-label="Colpisci il bersaglio"></button>
 </div>
 
-<div id="message">Sei pronto alla sfida?</div>
+<div class="legend">
+🔴 Rosso +1 &nbsp; 🟡 Oro +5<br>
+💎 Diamante +10 &nbsp; 💣 Bomba -5
+</div>
 
-<button class="start" id="start">
+<div class="controls">
+<button class="action" id="start">▶ START GAME</button>
+<button class="action" id="sound">🔊 AUDIO ON</button>
+</div>
 
-  INIZIA A GIOCARE
+<div class="panel">
+<h2>🏆 TOP 5 RECORD</h2>
+<ol id="leaderboard"></ol>
+</div>
 
-</button>
-
-<br>
-
-<button id="sound">🔊 AUDIO ON</button>
-
-<p class="legend">
-
-  🔴 Bersaglio rosso: +1 punto<br>
-
-  🟡 Bersaglio dorato: +5 punti
-
-</p>
+<footer>ARCADE TARGET 3.0 • ULTIMATE CHALLENGE</footer>
 
 <script>
+let score=0,time=30,level=1;
+let playing=false,soundOn=true;
+let timer=null,movement=null,spawnTimer=null,audio=null;
+let speed=1000,targetType="red";
 
-let score = 0;
+let best=Number(localStorage.getItem("arcadeBest"))||0;
 
-let time = 30;
+const arena=document.getElementById("arena");
+const target=document.getElementById("target");
+const message=document.getElementById("message");
 
-let level = 1;
-
-let playing = false;
-
-let timer;
-
-let movement;
-
-let soundOn = true;
-
-let audio;
-
-let best = Number(
-
-  localStorage.getItem("arcadeBest")
-
-) || 0;
-
-const arena = document.getElementById("arena");
-
-const target = document.getElementById("target");
-
-const scoreDisplay = document.getElementById("score");
-
-const timeDisplay = document.getElementById("time");
-
-const levelDisplay = document.getElementById("level");
-
-const bestDisplay = document.getElementById("best");
-
-const message = document.getElementById("message");
-
-bestDisplay.textContent = best;
-
-function playSound(frequency, duration) {
-
-  if (!soundOn) return;
-
-  try {
-
-    audio = audio || new AudioContext();
-
-    const oscillator = audio.createOscillator();
-
-    const gain = audio.createGain();
-
-    oscillator.connect(gain);
-
-    gain.connect(audio.destination);
-
-    oscillator.frequency.value = frequency;
-
-    gain.gain.value = 0.08;
-
-    oscillator.start();
-
-    oscillator.stop(audio.currentTime + duration);
-
-  } catch (error) {}
-
+function update(){
+document.getElementById("score").textContent=score;
+document.getElementById("time").textContent=time;
+document.getElementById("level").textContent=level;
+document.getElementById("best").textContent=best;
 }
 
-function moveTarget() {
-
-  const maxX = arena.clientWidth - target.offsetWidth;
-
-  const maxY = arena.clientHeight - target.offsetHeight;
-
-  target.style.left = Math.random() * maxX + "px";
-
-  target.style.top = Math.random() * maxY + "px";
-
-  const special = Math.random() < 0.20;
-
-  target.className = special
-
-    ? "target gold"
-
-    : "target red";
-
-  target.dataset.points = special ? "5" : "1";
-
+function playSound(freq,duration=.1){
+if(!soundOn)return;
+try{
+audio=audio||new(window.AudioContext||window.webkitAudioContext)();
+if(audio.state==="suspended")audio.resume();
+let osc=audio.createOscillator();
+let gain=audio.createGain();
+osc.connect(gain);gain.connect(audio.destination);
+osc.frequency.value=freq;
+gain.gain.value=.07;
+osc.start();
+osc.stop(audio.currentTime+duration);
+}catch(e){}
 }
 
-function startGame() {
-
-  clearInterval(timer);
-
-  clearInterval(movement);
-
-  score = 0;
-
-  time = 30;
-
-  level = 1;
-
-  playing = true;
-
-  scoreDisplay.textContent = score;
-
-  timeDisplay.textContent = time;
-
-  levelDisplay.textContent = level;
-
-  message.textContent = "COLPISCI I BERSAGLI!";
-
-  document.getElementById("start").textContent = "RICOMINCIA";
-
-  target.style.display = "block";
-
-  moveTarget();
-
-  movement = setInterval(moveTarget, 1000);
-
-  timer = setInterval(() => {
-
-    time--;
-
-    timeDisplay.textContent = time;
-
-    if (time <= 0) endGame();
-
-  }, 1000);
-
+function moveTarget(){
+let maxX=arena.clientWidth-target.offsetWidth;
+let maxY=arena.clientHeight-target.offsetHeight;
+target.style.left=Math.random()*Math.max(0,maxX)+"px";
+target.style.top=Math.random()*Math.max(0,maxY)+"px";
 }
 
-function updateLevel() {
+function spawnTarget(){
+if(!playing)return;
+clearTimeout(spawnTimer);
+clearInterval(movement);
 
-  const newLevel = Math.floor(score / 10) + 1;
+let r=Math.random();
 
-  if (newLevel > level) {
-
-    level = newLevel;
-
-    levelDisplay.textContent = level;
-
-    message.textContent = "🔥 LIVELLO " + level + "!";
-
-    playSound(700, 0.15);
-
-    clearInterval(movement);
-
-    const speed = Math.max(300, 1000 - (level - 1) * 100);
-
-    movement = setInterval(moveTarget, speed);
-
-  }
-
+if(r<.45){
+targetType="red";
+target.textContent="";
+}else if(r<.67){
+targetType="gold";
+target.textContent="";
+}else if(r<.83){
+targetType="diamond";
+target.textContent="";
+}else{
+targetType="bomb";
+target.textContent="💣";
 }
 
-target.addEventListener("click", () => {
+target.className="target "+targetType;
+target.style.display="block";
+moveTarget();
 
-  if (!playing) return;
+movement=setInterval(()=>{
+if(playing)moveTarget();
+},Math.max(350,speed*.6));
 
-  const points = Number(target.dataset.points);
+spawnTimer=setTimeout(spawnTarget,speed);
+}
 
-  score += points;
+function hitTarget(){
+if(!playing||target.style.display==="none")return;
 
-  scoreDisplay.textContent = score;
+target.style.display="none";
 
-  playSound(points === 5 ? 950 : 550, 0.08);
+if(targetType==="red"){
+score+=1;playSound(550);
+}else if(targetType==="gold"){
+score+=5;playSound(850);
+}else if(targetType==="diamond"){
+score+=10;playSound(1100);
+}else{
+score=Math.max(0,score-5);playSound(150,.2);
+}
 
-  moveTarget();
+let newLevel=Math.floor(score/20)+1;
+if(newLevel>level){
+level=newLevel;
+speed=Math.max(350,1000-(level-1)*100);
+document.getElementById("countdown").textContent="🔥 LIVELLO "+level+"!";
+playSound(1200,.2);
+}
 
-  updateLevel();
+update();
+spawnTarget();
+}
 
+target.addEventListener("pointerdown",function(e){
+e.preventDefault();
+hitTarget();
 });
 
-function endGame() {
+function startGame(){
+clearInterval(timer);
+clearInterval(movement);
+clearTimeout(spawnTimer);
 
-  playing = false;
+score=0;time=30;level=1;speed=1000;
+playing=true;
+target.style.display="none";
+message.style.display="none";
 
-  clearInterval(timer);
+document.getElementById("countdown").textContent="🎯 COLPISCI I BERSAGLI!";
+document.getElementById("start").textContent="IN GIOCO";
 
-  clearInterval(movement);
+update();
+spawnTarget();
 
-  target.style.display = "none";
-
-  document.getElementById("start").textContent =
-
-    "GIOCA ANCORA";
-
-  playSound(250, 0.35);
-
-  if (score > best) {
-
-    best = score;
-
-    localStorage.setItem("arcadeBest", best);
-
-    bestDisplay.textContent = best;
-
-    message.textContent =
-
-      "🏆 NUOVO RECORD! " + score + " PUNTI!";
-
-  } else {
-
-    message.textContent =
-
-      "PARTITA FINITA! " + score + " PUNTI!";
-
-  }
-
+timer=setInterval(()=>{
+time--;
+update();
+if(time<=0)endGame();
+},1000);
 }
 
-document.getElementById("start")
+function endGame(){
+playing=false;
+clearInterval(timer);
+clearInterval(movement);
+clearTimeout(spawnTimer);
+target.style.display="none";
 
-  .addEventListener("click", startGame);
+if(score>best){
+best=score;
+localStorage.setItem("arcadeBest",best);
+document.getElementById("countdown").textContent="🏆 NUOVO RECORD!";
+}else{
+document.getElementById("countdown").textContent="PARTITA TERMINATA!";
+}
 
-document.getElementById("sound")
+saveScore(score);
+message.style.display="block";
+message.innerHTML="GAME OVER<br><br>"+score+" PUNTI";
+document.getElementById("start").textContent="↻ GIOCA ANCORA";
+playSound(250,.3);
+update();
+}
 
-  .addEventListener("click", () => {
+function saveScore(points){
+let scores=JSON.parse(localStorage.getItem("arcadeTop5")||"[]");
+scores.push({score:points,date:new Date().toLocaleDateString("it-IT")});
+scores.sort((a,b)=>b.score-a.score);
+scores=scores.slice(0,5);
+localStorage.setItem("arcadeTop5",JSON.stringify(scores));
+renderLeaderboard();
+}
 
-    soundOn = !soundOn;
+function renderLeaderboard(){
+let scores=JSON.parse(localStorage.getItem("arcadeTop5")||"[]");
+let list=document.getElementById("leaderboard");
+list.innerHTML="";
 
-    document.getElementById("sound").textContent =
+if(!scores.length){
+list.innerHTML="<li>Ancora nessun record</li>";
+return;
+}
 
-      soundOn ? "🔊 AUDIO ON" : "🔇 AUDIO OFF";
+scores.forEach((item,index)=>{
+let li=document.createElement("li");
+let left=document.createElement("span");
+let right=document.createElement("strong");
+left.textContent=["🥇","🥈","🥉","4.","5."][index]+" "+item.date;
+right.textContent=item.score+" PT";
+li.append(left,right);
+list.appendChild(li);
+});
+}
 
-  });
+document.getElementById("start").addEventListener("click",startGame);
 
+document.getElementById("sound").addEventListener("click",function(){
+soundOn=!soundOn;
+this.textContent=soundOn?"🔊 AUDIO ON":"🔇 AUDIO OFF";
+if(soundOn)playSound(600);
+});
+
+update();
+renderLeaderboard();
 </script>
-
 </body>
-
 </html>
