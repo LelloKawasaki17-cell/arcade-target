@@ -4,59 +4,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Arcade Target 3.0</title>
+<title>ARCADE TARGET 4.0</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px 12px;background:#090714;color:white;font-family:Arial;text-align:center}
-h1{font-size:32px;letter-spacing:3px;color:#d9a5ff;text-shadow:0 0 18px #a855f7}
-.subtitle{color:#aaa;letter-spacing:4px;font-size:11px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:550px;margin:20px auto 12px}
-.stat{background:#19152a;border:1px solid #65418a;border-radius:13px;padding:13px 5px;font-size:11px;color:#bbb}
-.stat strong{display:block;color:#facc15;font-size:25px;margin-top:7px}
-#bestbox{max-width:550px;margin:12px auto}
-#arena{position:relative;width:100%;max-width:550px;height:420px;margin:15px auto;background:radial-gradient(circle,#302047,#100d1c);border:2px solid #a855f7;border-radius:18px;overflow:hidden;box-shadow:0 0 25px #9333ea44;touch-action:manipulation}
-#arena:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:25px 25px;pointer-events:none}
-.target{position:absolute;width:62px;height:62px;border:4px solid white;border-radius:50%;z-index:2;display:none;touch-action:manipulation}
+body{margin:0;padding:18px 12px;background:#080612;color:white;font-family:Arial,sans-serif;text-align:center}
+h1{font-size:30px;letter-spacing:3px;color:#d7a8ff;text-shadow:0 0 18px #a855f7}
+.subtitle{color:#aaa;font-size:11px;letter-spacing:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:550px;margin:18px auto}
+.stat{background:#19152a;border:1px solid #65418a;border-radius:12px;padding:12px 4px;color:#bbb;font-size:11px}
+.stat strong{display:block;color:#facc15;font-size:24px;margin-top:6px}
+#arena{position:relative;width:100%;max-width:550px;height:410px;margin:15px auto;background:radial-gradient(circle,#302047,#100b1c);border:2px solid #a855f7;border-radius:18px;overflow:hidden;touch-action:manipulation}
+#arena:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:25px 25px;pointer-events:none}
+.target{position:absolute;width:60px;height:60px;border:4px solid white;border-radius:50%;z-index:3;display:none;touch-action:manipulation;color:white}
 .red{background:radial-gradient(circle,#fff,#ff6565 25%,#e21c36 70%);box-shadow:0 0 22px #ff3158}
 .gold{background:radial-gradient(circle,#fff,#fff2a6 25%,#ffbd00 70%);box-shadow:0 0 25px gold}
 .diamond{border-radius:12px;background:linear-gradient(135deg,#fff,#48edff,#0878ff);box-shadow:0 0 25px cyan;transform:rotate(45deg)}
-.bomb{background:#222;border:3px solid #ff3333;box-shadow:0 0 25px red;font-size:28px}
-#message{position:absolute;top:42%;width:100%;font-weight:bold;font-size:20px;color:#facc15;pointer-events:none;padding:10px}
+.bomb{background:#222;border:3px solid red;font-size:26px;box-shadow:0 0 25px red}
+.boss{width:115px;height:115px;border-radius:25px;background:radial-gradient(circle,#ffb5b5,#b000ff 50%,#310047);border:5px solid #ffcc00;box-shadow:0 0 35px #ff00dd;font-size:45px}
+#message{position:absolute;top:43%;width:100%;padding:10px;font-size:20px;font-weight:bold;color:#facc15;pointer-events:none;z-index:2}
+#bossInfo{display:none;position:absolute;top:10px;left:5%;width:90%;z-index:4}
+#bossInfo strong{color:#ff8080;font-size:12px}
+#bossBar{height:13px;background:#391b36;border:1px solid white;border-radius:10px;overflow:hidden;margin-top:5px}
+#bossHealth{height:100%;width:100%;background:linear-gradient(90deg,#ff3333,#ffcc00);transition:width .15s}
+#energyBox{max-width:550px;margin:10px auto;color:#aaa;font-size:11px}
+.bar{height:12px;background:#292039;border-radius:10px;overflow:hidden;margin-top:7px;border:1px solid #65418a}
+#energy{height:100%;width:100%;background:linear-gradient(90deg,#00d9ff,#a855f7);transition:width .2s}
 #countdown{color:#facc15;font-weight:bold;margin:12px}
-.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.action{padding:15px 22px;border:0;border-radius:25px;background:linear-gradient(135deg,#a855f7,#5b21b6);color:white;font-weight:bold;font-size:14px}
+.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.action{padding:13px 20px;border:0;border-radius:25px;background:linear-gradient(135deg,#a855f7,#5b21b6);color:white;font-weight:bold;font-size:13px}
 #sound{background:#292039;border:1px solid #7041a8}
-.legend{color:#ccc;font-size:13px;line-height:2;margin:15px}
+select,input{background:#19152a;color:white;border:1px solid #7041a8;border-radius:10px;padding:12px;font-size:14px}
+#difficultyBox{margin:18px}
+.legend{color:#ccc;font-size:12px;line-height:2;margin:15px}
 .panel{background:#19152a;border:1px solid #65418a;border-radius:15px;max-width:550px;margin:18px auto;padding:15px}
 .panel h2{color:#facc15;font-size:17px}
 #leaderboard{list-style:none;padding:0;text-align:left}
-#leaderboard li{padding:10px;border-bottom:1px solid #39304d;display:flex;justify-content:space-between}
+#leaderboard li{padding:10px;border-bottom:1px solid #39304d;display:flex;justify-content:space-between;gap:8px}
+#leaderboard li span{overflow-wrap:anywhere}
 footer{font-size:10px;color:#777;padding:20px}
 </style>
 </head>
 <body>
 
 <h1>🎯 ARCADE TARGET</h1>
-<p class="subtitle">ULTIMATE EDITION 3.0</p>
+<p class="subtitle">BOSS BATTLE EDITION 4.0</p>
+
+<div id="difficultyBox">
+<label for="difficulty">⚔️ DIFFICOLTÀ</label><br><br>
+<select id="difficulty">
+<option value="easy">FACILE</option>
+<option value="normal" selected>NORMALE</option>
+<option value="hard">DIFFICILE</option>
+<option value="impossible">IMPOSSIBILE</option>
+</select>
+</div>
 
 <div class="stats">
 <div class="stat">PUNTEGGIO<strong id="score">0</strong></div>
-<div class="stat">TEMPO<strong id="time">30</strong></div>
+<div class="stat">TEMPO<strong id="time">45</strong></div>
 <div class="stat">LIVELLO<strong id="level">1</strong></div>
+<div class="stat">VITE<strong id="lives">❤️❤️❤️</strong></div>
+<div class="stat">COMBO<strong id="combo">x1</strong></div>
+<div class="stat">RECORD<strong id="best">0</strong></div>
 </div>
 
-<div class="stat" id="bestbox">🏆 RECORD PERSONALE<strong id="best">0</strong></div>
+<div id="energyBox">
+ENERGIA
+<div class="bar"><div id="energy"></div></div>
+</div>
 
 <div id="countdown">PREPARATI ALLA SFIDA!</div>
 
 <div id="arena">
+<div id="bossInfo">
+<strong id="bossTitle">👹 BOSS FINALE</strong>
+<div id="bossBar"><div id="bossHealth"></div></div>
+</div>
 <div id="message">PREMI START PER GIOCARE</div>
 <button id="target" class="target" aria-label="Colpisci il bersaglio"></button>
 </div>
 
 <div class="legend">
-🔴 Rosso +1 &nbsp; 🟡 Oro +5<br>
-💎 Diamante +10 &nbsp; 💣 Bomba -5
+🔴 +1 &nbsp; 🟡 +5 &nbsp; 💎 +10<br>
+💣 -5 e perdi una vita<br>
+👹 BOSS: colpiscilo più volte!
 </div>
 
 <div class="controls">
@@ -64,30 +95,42 @@ footer{font-size:10px;color:#777;padding:20px}
 <button class="action" id="sound">🔊 AUDIO ON</button>
 </div>
 
-<div class="panel">
-<h2>🏆 TOP 5 RECORD</h2>
+<section class="panel">
+<h2>🏆 TOP 5 PLAYERS</h2>
+<input id="playerName" maxlength="15" placeholder="Il tuo nome" aria-label="Nome giocatore">
 <ol id="leaderboard"></ol>
-</div>
+</section>
 
-<footer>ARCADE TARGET 3.0 • ULTIMATE CHALLENGE</footer>
+<footer>ARCADE TARGET 4.0 • ULTIMATE BATTLE</footer>
 
 <script>
-let score=0,time=30,level=1;
+let score=0,time=45,level=1,lives=3,combo=0,energy=100;
 let playing=false,soundOn=true;
 let timer=null,movement=null,spawnTimer=null,audio=null;
 let speed=1000,targetType="red";
-
+let bossActive=false,bossHP=0,bossMax=0;
 let best=Number(localStorage.getItem("arcadeBest"))||0;
 
 const arena=document.getElementById("arena");
 const target=document.getElementById("target");
 const message=document.getElementById("message");
+const difficulty=document.getElementById("difficulty");
+
+const settings={
+easy:{time:60,speed:1300,points:1},
+normal:{time:45,speed:1000,points:1},
+hard:{time:40,speed:750,points:1.2},
+impossible:{time:35,speed:550,points:1.5}
+};
 
 function update(){
 document.getElementById("score").textContent=score;
 document.getElementById("time").textContent=time;
 document.getElementById("level").textContent=level;
+document.getElementById("lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);
+document.getElementById("combo").textContent="x"+Math.max(1,Math.floor(combo/3)+1);
 document.getElementById("best").textContent=best;
+document.getElementById("energy").style.width=energy+"%";
 }
 
 function playSound(freq,duration=.1){
@@ -105,32 +148,61 @@ osc.stop(audio.currentTime+duration);
 }catch(e){}
 }
 
+function clearTargets(){
+clearInterval(movement);
+clearTimeout(spawnTimer);
+target.style.display="none";
+}
+
 function moveTarget(){
-let maxX=arena.clientWidth-target.offsetWidth;
-let maxY=arena.clientHeight-target.offsetHeight;
-target.style.left=Math.random()*Math.max(0,maxX)+"px";
-target.style.top=Math.random()*Math.max(0,maxY)+"px";
+let maxX=arena.clientWidth-target.offsetWidth-8;
+let maxY=arena.clientHeight-target.offsetHeight-8;
+target.style.left=(5+Math.random()*Math.max(0,maxX-5))+"px";
+target.style.top=(bossActive?65:5)+Math.random()*Math.max(0,maxY-(bossActive?65:5))+"px";
+}
+
+function startBoss(){
+bossActive=true;
+clearTargets();
+bossMax=5+Math.floor(level/5)*2;
+bossHP=bossMax;
+targetType="boss";
+target.className="target boss";
+target.textContent="👹";
+target.style.display="block";
+document.getElementById("bossInfo").style.display="block";
+document.getElementById("bossTitle").textContent="👹 BOSS LIVELLO "+level;
+updateBossBar();
+document.getElementById("countdown").textContent="⚠️ BOSS IN ARRIVO!";
+moveTarget();
+movement=setInterval(()=>{
+if(playing&&bossActive)moveTarget();
+},Math.max(400,speed));
+}
+
+function updateBossBar(){
+document.getElementById("bossHealth").style.width=(bossHP/bossMax*100)+"%";
 }
 
 function spawnTarget(){
 if(!playing)return;
-clearTimeout(spawnTimer);
-clearInterval(movement);
+clearTargets();
+
+if(level%5===0&&!bossActive&&score>=level*20){
+startBoss();
+return;
+}
 
 let r=Math.random();
 
-if(r<.45){
-targetType="red";
-target.textContent="";
-}else if(r<.67){
-targetType="gold";
-target.textContent="";
-}else if(r<.83){
-targetType="diamond";
-target.textContent="";
+if(r<.43){
+targetType="red";target.textContent="";
+}else if(r<.65){
+targetType="gold";target.textContent="";
+}else if(r<.82){
+targetType="diamond";target.textContent="";
 }else{
-targetType="bomb";
-target.textContent="💣";
+targetType="bomb";target.textContent="💣";
 }
 
 target.className="target "+targetType;
@@ -138,56 +210,115 @@ target.style.display="block";
 moveTarget();
 
 movement=setInterval(()=>{
-if(playing)moveTarget();
-},Math.max(350,speed*.6));
+if(playing&&!bossActive)moveTarget();
+},Math.max(300,speed*.65));
 
-spawnTimer=setTimeout(spawnTarget,speed);
+spawnTimer=setTimeout(()=>{
+if(playing&&!bossActive){
+combo=0;
+update();
+spawnTarget();
+}
+},speed*1.6);
 }
 
 function hitTarget(){
 if(!playing||target.style.display==="none")return;
 
-target.style.display="none";
+if(bossActive){
+bossHP--;
+score+=2;
+energy=Math.min(100,energy+2);
+playSound(850,.08);
 
-if(targetType==="red"){
-score+=1;playSound(550);
-}else if(targetType==="gold"){
-score+=5;playSound(850);
-}else if(targetType==="diamond"){
-score+=10;playSound(1100);
+if(bossHP<=0){
+bossActive=false;
+clearTargets();
+document.getElementById("bossInfo").style.display="none";
+score+=50;
+energy=100;
+lives=Math.min(3,lives+1);
+level++;
+speed=Math.max(300,speed-70);
+document.getElementById("countdown").textContent="🏆 BOSS SCONFITTO! +50 PUNTI";
+update();
+playSound(1300,.35);
+setTimeout(()=>{
+if(playing)spawnTarget();
+},500);
 }else{
-score=Math.max(0,score-5);playSound(150,.2);
+updateBossBar();
+moveTarget();
+}
+update();
+return;
+}
+
+let points=0;
+
+if(targetType==="red"){points=1;playSound(550);}
+if(targetType==="gold"){points=5;playSound(850);}
+if(targetType==="diamond"){points=10;playSound(1100);}
+
+if(targetType==="bomb"){
+score=Math.max(0,score-5);
+lives--;
+energy=Math.max(0,energy-25);
+combo=0;
+playSound(130,.2);
+if(lives<=0||energy<=0){
+update();
+endGame();
+return;
+}
+}else{
+combo++;
+let multiplier=Math.min(5,Math.floor(combo/3)+1);
+score+=Math.round(points*multiplier);
+energy=Math.min(100,energy+5);
 }
 
 let newLevel=Math.floor(score/20)+1;
 if(newLevel>level){
 level=newLevel;
-speed=Math.max(350,1000-(level-1)*100);
+speed=Math.max(300,settings[difficulty.value].speed-(level-1)*65);
 document.getElementById("countdown").textContent="🔥 LIVELLO "+level+"!";
 playSound(1200,.2);
 }
 
 update();
+
+if(level%5===0&&score>=level*20){
+startBoss();
+}else{
 spawnTarget();
 }
+}
 
-target.addEventListener("pointerdown",function(e){
+target.addEventListener("pointerdown",e=>{
 e.preventDefault();
 hitTarget();
 });
 
 function startGame(){
 clearInterval(timer);
-clearInterval(movement);
-clearTimeout(spawnTimer);
+clearTargets();
 
-score=0;time=30;level=1;speed=1000;
+score=0;
+level=1;
+time=settings[difficulty.value].time;
+lives=3;
+combo=0;
+energy=100;
+speed=settings[difficulty.value].speed;
+bossActive=false;
 playing=true;
-target.style.display="none";
-message.style.display="none";
 
-document.getElementById("countdown").textContent="🎯 COLPISCI I BERSAGLI!";
+document.getElementById("bossInfo").style.display="none";
+document.getElementById("message").style.display="none";
+document.getElementById("countdown").textContent="🎯 INIZIA LA BATTAGLIA!";
 document.getElementById("start").textContent="IN GIOCO";
+difficulty.disabled=true;
 
 update();
 spawnTarget();
@@ -200,11 +331,13 @@ if(time<=0)endGame();
 }
 
 function endGame(){
+if(!playing)return;
 playing=false;
 clearInterval(timer);
-clearInterval(movement);
-clearTimeout(spawnTimer);
-target.style.display="none";
+clearTargets();
+bossActive=false;
+document.getElementById("bossInfo").style.display="none";
+difficulty.disabled=false;
 
 if(score>best){
 best=score;
@@ -224,7 +357,8 @@ update();
 
 function saveScore(points){
 let scores=JSON.parse(localStorage.getItem("arcadeTop5")||"[]");
-scores.push({score:points,date:new Date().toLocaleDateString("it-IT")});
+let name=document.getElementById("playerName").value.trim()||"PLAYER";
+scores.push({name:name,score:points,date:new Date().toLocaleDateString("it-IT")});
 scores.sort((a,b)=>b.score-a.score);
 scores=scores.slice(0,5);
 localStorage.setItem("arcadeTop5",JSON.stringify(scores));
@@ -237,7 +371,7 @@ let list=document.getElementById("leaderboard");
 list.innerHTML="";
 
 if(!scores.length){
-list.innerHTML="<li>Ancora nessun record</li>";
+list.innerHTML="<li>Nessun giocatore ancora</li>";
 return;
 }
 
@@ -245,7 +379,7 @@ scores.forEach((item,index)=>{
 let li=document.createElement("li");
 let left=document.createElement("span");
 let right=document.createElement("strong");
-left.textContent=["🥇","🥈","🥉","4.","5."][index]+" "+item.date;
+left.textContent=["🥇","🥈","🥉","4.","5."][index]+" "+item.name+" - "+item.date;
 right.textContent=item.score+" PT";
 li.append(left,right);
 list.appendChild(li);
